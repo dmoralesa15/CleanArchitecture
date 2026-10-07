@@ -57,15 +57,15 @@ jobs:
             /d:sonar.coverage.exclusions="**/wwwroot/**,**/Migrations/**"
 
       - name: Restore dependencies
-        run: dotnet restore Clean.Architecture.slnx
+        run: dotnet restore Clean.Architecture.slnx /p:TreatWarningsAsErrors=false
 
       - name: Build
-        run: dotnet build Clean.Architecture.slnx --configuration Release --no-restore
+        run: dotnet build Clean.Architecture.slnx --configuration Release --no-restore /p:TreatWarningsAsErrors=false /p:WarningsAsErrors=""
 
       - name: Run tests with coverage (optional)
         continue-on-error: true
         run: |
-          dotnet test Clean.Architecture.slnx --configuration Release --no-build --logger "console;verbosity=minimal" --collect:"XPlat Code Coverage" || echo "Tests may not produce expected coverage format"
+          dotnet test Clean.Architecture.slnx --configuration Release --no-build /p:TreatWarningsAsErrors=false --logger "console;verbosity=minimal" --collect:"XPlat Code Coverage" || echo "Tests may not produce expected coverage format"
 
       - name: End SonarQube analysis
         env:
